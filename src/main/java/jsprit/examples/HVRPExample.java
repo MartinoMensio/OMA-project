@@ -101,14 +101,16 @@ public class HVRPExample {
 		VehicleImpl vehicle1_2 = VehicleImpl.Builder.newInstance("1_2").setStartLocation(Location.newInstance(40, 40)).setType(type1).build();
 		vrpBuilder.addVehicle(vehicle1_2);
 		//1xtype2
-		VehicleType type2 = VehicleTypeImpl.Builder.newInstance("type_2").addCapacityDimension(0, 160).setCostPerDistance(1.1).build();
+		VehicleType type2 = VehicleTypeImpl.Builder.newInstance("type_2").addCapacityDimension(0, 100).setCostPerDistance(1.1).build();
 		VehicleImpl vehicle2_1 = VehicleImpl.Builder.newInstance("2_1").setStartLocation(Location.newInstance(40, 40)).setType(type2).build();
 		vrpBuilder.addVehicle(vehicle2_1);
 		//1xtype3
-		VehicleType type3 = VehicleTypeImpl.Builder.newInstance("type_3").addCapacityDimension(0, 300).setCostPerDistance(1.3).build();
+		VehicleType type3 = VehicleTypeImpl.Builder.newInstance("type_3").addCapacityDimension(0, 100).setCostPerDistance(1.3).build();
 		VehicleImpl vehicle3_1 = VehicleImpl.Builder.newInstance("3_1").setStartLocation(Location.newInstance(40, 40)).setType(type3).build();
 		vrpBuilder.addVehicle(vehicle3_1);
-		
+		VehicleType type4 = VehicleTypeImpl.Builder.newInstance("type_4").addCapacityDimension(0, 100).setCostPerDistance(1.4).build();
+		VehicleImpl vehicle4_1 = VehicleImpl.Builder.newInstance("4_1").setStartLocation(Location.newInstance(40, 40)).setType(type4).build();
+		vrpBuilder.addVehicle(vehicle4_1);		
 		//add penaltyVehicles to allow invalid solutions temporarily
 //		vrpBuilder.addPenaltyVehicles(5, 1000);
 		
@@ -118,7 +120,7 @@ public class HVRPExample {
 		//build problem
 		VehicleRoutingProblem vrp = vrpBuilder.build();
 		
-		VehicleRoutingAlgorithm vra = VehicleRoutingAlgorithms.readAndCreateAlgorithm(vrp, "input/algorithmConfigWithSchrimpfAcceptance.xml");
+		VehicleRoutingAlgorithm vra = VehicleRoutingAlgorithms.readAndCreateAlgorithm(vrp, "input/algorithmConfig.xml");
 		Collection<VehicleRoutingProblemSolution> solutions = vra.searchSolutions();
 		
 		VehicleRoutingProblemSolution best = Solutions.bestOf(solutions);

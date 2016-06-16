@@ -1,12 +1,18 @@
 <?xml version="1.0" ?>
-
+<!-- solverVRP-1  -->
 <algorithm xmlns="http://www.w3schools.com"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3schools.com algorithm_schema.xsd">
 
-	<iterations>1024</iterations>
+<!-- TODO: only to speedup	<iterations>65536</iterations> -->
+		<iterations>16000</iterations>
 	
+	<prematureBreak basedOn="variationCoefficient">
+		<threshold>0.001</threshold>
+		<iterations>2000</iterations>
+	</prematureBreak>
+
 	<construction>
-		<insertion name="bestInsertion">
+		<insertion name="regretInsertion">
 			<considerFixedCosts weight="1.0">true</considerFixedCosts>
 		</insertion>
 	</construction>
@@ -17,11 +23,14 @@
 
 			<searchStrategy name="randomRuinAndRecreate">
 				<selector name="selectBest"/>
-	  			<acceptor name="acceptNewRemoveWorst"/> 
+				<acceptor name="schrimpfAcceptance">  
+			 		<alpha>0.1</alpha>  
+					<warmup>800</warmup> 
+				</acceptor>
 				<modules>
 					<module name="ruin_and_recreate">
 						<ruin name="randomRuin">
-							<share>0.5</share>
+							<share>0.3</share>
 						</ruin>
 						<insertion name="bestInsertion"/>
 					</module>
@@ -35,7 +44,7 @@
 				<modules>
 					<module name="ruin_and_recreate">
 						<ruin name="radialRuin">
-							<share>0.3</share>
+							<share>0.2</share>
 						</ruin>
 						<insertion name="bestInsertion"/>
 					</module>

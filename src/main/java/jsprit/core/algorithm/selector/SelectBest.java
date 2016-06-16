@@ -16,6 +16,7 @@
  ******************************************************************************/
 package jsprit.core.algorithm.selector;
 
+import jsprit.core.problem.job.Job;
 import jsprit.core.problem.solution.VehicleRoutingProblemSolution;
 
 import java.util.Collection;
@@ -49,6 +50,21 @@ public class SelectBest implements SolutionSelector{
 				bestSolution = sol;
 				minCost = sol.getCost();
 			}
+		}
+		return bestSolution;
+	}
+	
+	public VehicleRoutingProblemSolution selectAllVehiclesSolution(Collection<VehicleRoutingProblemSolution> solutions) {
+		int minCost = 0;
+		VehicleRoutingProblemSolution bestSolution = null;
+		for(VehicleRoutingProblemSolution sol : solutions){
+			if(bestSolution == null){
+				bestSolution = sol;
+			}
+			else if(sol.getUnassignedJobs().size() > minCost){
+				bestSolution = sol;
+			}
+			minCost = sol.getUnassignedJobs().size();
 		}
 		return bestSolution;
 	}

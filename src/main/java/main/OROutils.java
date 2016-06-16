@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.function.ToIntFunction;
 
 import jsprit.core.problem.VehicleRoutingProblem;
 import jsprit.core.problem.solution.VehicleRoutingProblemSolution;
@@ -26,7 +27,25 @@ public class OROutils {
 		try {
 			double seconds = eTime/1000.0;
 			DecimalFormat df = new DecimalFormat("#.00");
-			writer.write(name + ";" + df.format(sol.getCost()) + ";" + df.format(seconds) + ";" + sol.getRoutes().size() +"\n");
+			int minJobsInRoute = sol.getRoutes().stream().mapToInt(new ToIntFunction<VehicleRoute>() {
+
+				@Override
+				public int applyAsInt(VehicleRoute value) {
+					return value.getActivities().size();
+				}
+				
+			}).min().getAsInt();
+			int maxJobsInRoute = sol.getRoutes().stream().mapToInt(new ToIntFunction<VehicleRoute>() {
+
+				@Override
+				public int applyAsInt(VehicleRoute value) {
+					return value.getActivities().size();
+				}
+				
+			}).max().getAsInt();
+			writer.write(name + ";" + df.format(sol.getCost()) + ";" + df.format(seconds) + ";" + sol.getRoutes().size()
+					+ ";" + sol.getUnassignedJobs().size()
+					+ ";" + minJobsInRoute + ";" + maxJobsInRoute + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	

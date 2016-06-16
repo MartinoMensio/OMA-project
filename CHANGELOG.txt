@@ -1,0 +1,105 @@
+15-11-13-v1
+"I added a new foo() function in main.java"
+
+15-11-30-v1
+"I modified algorithmConfig.xml"
+"all instances except RC104-105 are feasible solutions for assignment 1"
+
+15-12-01-v1
+"I modified algorithmConfig.xml doubling the number of iterations compared to previous version"
+"all instances except RC103,107,108 are fesible solutions for assignment 1"
+
+15-12-14-v1
+"alpha version for assignment 2"
+"in main.java the commented block has a bug that creates two depots"
+"in SolomonReader.java line 103 I started implementing the solution with only one depot"
+
+15-12-21-v1
+"BETA version for assignment 2"
+"in main.java i added the coefficientVariation that is used for the 10%, 20% task"
+"in SolomonReader.java line I implementing the solution with only one depot and fixed lower bound of vehicles"
+"execute jar using following format: java SolverVRP -i RC101.txt 1.2"
+
+15-12-22-v1.zip
+SolomonReader:
+- fix possible exceptions due to instance name: all lowercase in private map
+- makes a first read to calculate total demand
+- calculate vehicle capacity: totDemand/nVehicles * 1.1
+ (1.1 factor to let some freedom to unbalanced routes)
+Printer of solution:
+- output of unassignedJobs
+Bat
+- do things with increasing param
+TODOS:
+- remove 1*1 mul and replace with something else,
+ because can cause problems with large number of routes
+- fix cases where unassignedJobs
+
+15-12-22-v2
+SolomonReader:
+- replaced 1.1 mul with -1.5 subtraction at denominator
+- seems to work (no Unassigned, no unused Vehicles)
+
+15-12-22-v3
+changes:
+SolomonReader:
+•added read from file code block
+new file in /input folder : instanceVehicles.txt
+•this file contains the following association: instance -> #vehicles
+•note: i also added the instances from R101 to R211
+
+15-12-24-v1
+- Main: fixedFleetSize obtained through a soft constraint obtained changing the objective function: lagrangian relaxation assigns penalty to solutions with lower number of vehicles and to solutions with unassigned jobs
+- SolomonReader: previous approach to problem, limiting the capacity of vehicles was a too strong constraint
+- OROutils now prints out min and max number of jobs in routes
+TODO:
+- make routes equilibrated, using a limited capacity, but not too strictly
+
+15-12-24-v2
+Changelog:
+- added ability to use balanced routes (via reduced capacity)
+Usage:
+to launch the balanced version, use vrp.jar -i rc101.txt 1.2 b
+to launch the not balanced (lower costs) use vrp.jar -i rc101.txt 1.2
+
+15-12-24-v2
+Changelog:
+- added ability to use balanced routes (via reduced capacity)
+Usage:
+vrp.jar -i rc101.txt 1.2             unbalanced
+vrp.jar -i rc101.txt 1.2 b        balanced with default rate max/min = 2
+vrp.jar -i rc101.txt 1.2 b 3.2        balanced with custom rate max/min
+
+15-12-24-v2
+Changelog:
+- GraphStreamViewer not displayed
+- different bat for testing
+
+15-12-29-v1
+Changelog:
+- introduced limit on jobs per route (hard constraint) to reduce search space and reach good solutions (hopefully)
+
+15-12-29-v2
+problems this version tries to resolve: some instances are too constrained,
+others not enough.
+1st group:
+rc101, rc104: if limit on jobs per route (or capacity) is too low,
+	those instances leave out some jobs (unassigned)
+	rc101: 15 vehicles
+	rc104: 10 vehicles
+c201, rc102, rc204, rc208: if limit on jobs per route (or capacity)
+	is not enough tight, unable to force to use more vehicles
+	c201: 3, unable to push to 4 (x1.1, x1.2, x1.3)
+	rc102: 14, unable to push to 19 (x1.3)
+	rc204: 4, unable to push to 6 (x1.3)
+	rc208: 4, unable to push to 6 (x1.3)
+	
+special problem:
+- c101 needs some routes of 13 jobs to have optimal value
+	can't apply limit njob/(routes-1)= 11.1
+- c201 needs a maximum limit of 33, otherwise it won't use 4 routes
+	can't apply limit njob/(routes-1)+1=34
+Changelog:
+- limit on jobs per route (hard constraint) has 2 cases:
+	more/less than 9 vehicles
+
